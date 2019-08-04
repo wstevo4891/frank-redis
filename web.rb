@@ -4,6 +4,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/json'
 require 'redis'
+require 'erb'
 
 set :bind, '0.0.0.0'
 
@@ -23,9 +24,18 @@ get '/' do
 end
 
 get '/redis' do
-  'Hello Redis'
+  json $Redis.inspect
 end
 
 get '/about' do
   'Frank Redis is a Sinatra app with Redis'
+end
+
+get '/set-key/:key/:value' do
+  $Redis.set(params[:key], params[:value])
+  json params
+end
+
+get '/show-key/:key' do
+  $Redis.get(params[:key])
 end
