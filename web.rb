@@ -6,8 +6,9 @@ require 'sinatra/json'
 require 'redis'
 require 'erb'
 
+enable :logging
+
 set :bind, '0.0.0.0'
-set :logging, true
 set :message, false
 
 # Configure Redis
@@ -44,9 +45,10 @@ end
 
 post '/set-key' do
   key = params[:key]
-  value = params.delete(:key).to_json
-  puts "params: #{params.inspect}"
-  puts "value: #{value}"
+  params.delete(:key)
+  value = params.to_json
+  logger.info "params: #{params.inspect}"
+  logger.info "value: #{value}"
   $Redis.set(key, value)
 
   redirect "/show-key/#{key}"
