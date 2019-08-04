@@ -7,6 +7,8 @@ require 'redis'
 require 'erb'
 
 set :bind, '0.0.0.0'
+set :logging, true
+set :message, false
 
 # Configure Redis
 # $Redis = Redis.new(
@@ -19,6 +21,10 @@ $Redis = Redis.new(
 )
 
 get '/' do
+  erb :index, locals: { message: settings.message }
+end
+
+get '/count' do
   count = $Redis.incr('request_count')
   json count: count
 end
@@ -34,6 +40,16 @@ end
 get '/set-key/:key/:value' do
   $Redis.set(params[:key], params[:value])
   json params
+end
+
+post '/set-key' do
+  key = params[:key]
+  value = params.delete(:key).to_json
+  puts "params: #{params.inspect}"
+  puts "value: #{value}"
+  $Redis.set(key, value)
+
+  redirect "/show-key/#{key}"
 end
 
 get '/show-key/:key' do
