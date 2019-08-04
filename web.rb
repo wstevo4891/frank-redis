@@ -44,14 +44,10 @@ get '/set-key/:key/:value' do
 end
 
 post '/set-key' do
-  key = params[:key]
-  params.delete(:key)
-  value = params.to_json
   logger.info "params: #{params.inspect}"
-  logger.info "value: #{value}"
-  $Redis.set(key, value)
+  $Redis.set(params[:city], params.to_json)
 
-  redirect "/show-key/#{key}"
+  redirect "/show-key/#{params[:city]}"
 end
 
 get '/show-key/:key' do

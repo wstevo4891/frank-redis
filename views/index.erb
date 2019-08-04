@@ -1,6 +1,7 @@
 <% if message %>
   <div class="message">
     <p>Sorry, Redis can't do that.</p>
+  </div>
 <% end %>
 
 <h1>Welcome to Frank Redis</h1>
@@ -9,21 +10,20 @@
 
 <div class="feature">
   <p>
-    Enter a key name and other data to create
-    a new key - value pair in Redis
+    Create a new city record by submitting the form below.
   </p>
 </div>
 
 <div class="feature">
   <form action="/set-key" method="post">
-    <label>Key</label>
-    <input type="text" name="key" placeholder="Name your key">
-
     <label>City</label>
     <input type="text" name="city" placeholder="London" />
 
     <label>Country Code</label>
     <input type="text" name="country" placeholder="UK" />
+
+    <label>Population</label>
+    <input type="number" name="population" placeholder="1,000,000" />
 
     <input type="submit" value="Submit" />
   </form>
