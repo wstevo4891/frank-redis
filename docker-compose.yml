@@ -1,11 +1,26 @@
 # docker-compose.yml
 
-web:
-  build: .
-  ports:
-    - "4567:4567"
-  links:
-    - redis
+version: "2.4"
 
-redis:
-  image: redis
+services:
+  web:
+    build: .
+    ports:
+      - "4567:4567"
+    links:
+      - redis
+    volumes:
+      - ".:/app"
+    tty: true
+    command: ["rerun", "--force-polling", "foreman", "start"]
+
+  redis:
+    image: redis
+    ports:
+      - "6379"
+
+# volumes:
+#   web:
+#     external: false
+#   redis:
+#     external: false
